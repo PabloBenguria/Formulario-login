@@ -1,0 +1,14 @@
+***BBDD TAREAS***
+
+TABLA USUARIOS
+**************
+  PK = id
+  usuario
+  password
+
+TABLA TASKS
+***********
+  PK = id
+  tarea
+  estado
+  FK = usuario_id
