@@ -1,5 +1,5 @@
 <?php
-  require 'funciones.php';
+  require 'bootstrap.php';
   //Verdadero cuando haya algún campo vacio
   if(!comprobarVacios($_POST)){
     $usuario = filter_input(INPUT_POST, 'usuario', FILTER_SANITIZE_STRING);
@@ -11,8 +11,16 @@
       #Ciframos la contraseña
       $passCifrada = password_hash($pass, PASSWORD_DEFAULT);
 
-      #Procedemos al registro
+      #Comprobamos si el usuario existe en la tabla usuarios
       $conexion = conectar();
+      $resultado = $conexion->query("SELECT id FROM usuario WHERE usuario='$usuario'");
+      if($resultado->num_rows != 0){
+        $_SESSION['msg'] = 'El usuario ya existe';
+        header('Location: index.php');
+        exit();
+      }
+
+      #Procedemos al registro
       $resultado = $conexion->query("INSERT INTO usuarios VALUES('', '$usuario', '$passCifrada')");
 
       #Comprobamos si no funcionó el registro
